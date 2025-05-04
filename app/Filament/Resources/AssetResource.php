@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources;
 
+use App\Enums\AssetStatus;
 use App\Filament\Resources\AssetResource\Pages;
 use App\Filament\Resources\AssetResource\RelationManagers;
 use App\Filament\Resources\AssetResource\RelationManagers\MovementsRelationManager;
@@ -64,16 +65,11 @@ class AssetResource extends Resource
                             ->required()
                             ->maxLength(255),
                             
-                        Forms\Components\Select::make('status')
+                        Forms\Components\ToggleButtons::make('status')
                             ->label('Status')
-                            ->options([
-                                'active' => 'Ativo',
-                                'inactive' => 'Inativo',
-                                'maintenance' => 'Em Manutenção',
-                                'loaned' => 'Emprestado',
-                                'disposed' => 'Descartado',
-                            ])
-                            ->required(),
+                            ->options(AssetStatus::class)
+                            ->required()
+                            ->inline(),
                             
                         Forms\Components\TextInput::make('tag')
                             ->label('Etiqueta') 
@@ -118,23 +114,7 @@ class AssetResource extends Resource
                     
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
-                    ->badge()
-                    ->color(fn (string $state): string => match ($state) {
-                        'active' => 'success',
-                        'inactive' => 'danger',
-                        'maintenance' => 'warning',
-                        'loaned' => 'info',
-                        'disposed' => 'gray',
-                        default => 'gray',
-                    })
-                    ->formatStateUsing(fn (string $state): string => match ($state) {
-                        'active' => 'Ativo',
-                        'inactive' => 'Inativo',
-                        'maintenance' => 'Em Manutenção',
-                        'loaned' => 'Emprestado',
-                        'disposed' => 'Descartado',
-                        default => $state,
-                    }),
+                    ->badge(),
                     
                 Tables\Columns\TextColumn::make('tag')
                     ->label('Etiqueta')
@@ -155,13 +135,7 @@ class AssetResource extends Resource
             ->filters([
                 Tables\Filters\SelectFilter::make('status')
                     ->label('Status')
-                    ->options([
-                        'active' => 'Ativo',
-                        'inactive' => 'Inativo',
-                        'maintenance' => 'Em Manutenção',
-                        'loaned' => 'Emprestado',
-                        'disposed' => 'Descartado',
-                    ]),
+                    ->options(AssetStatus::class),
             ])
             ->actions([
                 Tables\Actions\ViewAction::make(),
