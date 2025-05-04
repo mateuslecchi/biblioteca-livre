@@ -76,10 +76,12 @@ class AssetResource extends Resource
                             ->required(),
                             
                         Forms\Components\TextInput::make('tag')
-                            ->label('Etiqueta')
-                            ->required()
+                            ->label('Etiqueta') 
+                            ->helperText('Gerada automaticamente se não for informada')
                             ->maxLength(255)
-                            ->unique(ignoreRecord: true),
+                            ->unique(ignoreRecord: true)
+                            ->placeholder('P-XXXXX')
+                            ->dehydrated(fn ($state) => filled($state)),
                     ])->columns(2),
                     
                 Forms\Components\Section::make('Detalhes')
