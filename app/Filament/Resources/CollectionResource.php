@@ -87,12 +87,14 @@ class CollectionResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Título')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50),
                     
                 Tables\Columns\TextColumn::make('author')
                     ->label('Autor')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50),
                     
                 Tables\Columns\TextColumn::make('quantity')
                     ->label('Quantidade')
@@ -108,12 +110,14 @@ class CollectionResource extends Resource
                     ->label('ISBN')
                     ->searchable()
                     ->sortable()
-                    ->toggleable(),
+                    ->toggleable()
+                    ->limit(13),
                     
                 Tables\Columns\TextColumn::make('tag')
                     ->label('Etiqueta')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Criado em')
@@ -133,7 +137,7 @@ class CollectionResource extends Resource
             ->actions([
                 Tables\Actions\ViewAction::make(),
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                // Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
                 // Tables\Actions\BulkActionGroup::make([
