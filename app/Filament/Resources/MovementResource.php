@@ -4,14 +4,18 @@ namespace App\Filament\Resources;
 
 use App\Filament\Resources\MovementResource\Pages;
 use App\Filament\Resources\MovementResource\RelationManagers;
+use App\Models\Asset;
 use App\Models\Movement;
 use Filament\Forms;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
+use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class MovementResource extends Resource
 {
@@ -39,8 +43,6 @@ class MovementResource extends Resource
                             ->required()
                             ->preload()
                             ->searchable()
-                            // ->default($assetId)
-                            // ->disabled(filled($assetId))
                             ->createOptionForm([
                                 Forms\Components\TextInput::make('name')
                                     ->label('Nome')
@@ -55,13 +57,6 @@ class MovementResource extends Resource
                             ->label('Local de Origem')
                             ->required()
                             ->maxLength(255),
-                            // ->default(function () use ($assetId) {
-                            //     if ($assetId) {
-                            //         $asset = Asset::find($assetId);
-                            //         return $asset ? $asset->location : '';
-                            //     }
-                            //     return '';
-                            // }),
                             
                         Forms\Components\TextInput::make('destination_location')
                             ->label('Local de Destino')
@@ -81,12 +76,6 @@ class MovementResource extends Resource
                             ->maxLength(65535),
                     ]),
                 ]);
-            // ->afterSave(function (Movement $movement) {
-            //     // Atualiza a localização do bem após a movimentação
-            //     $asset = $movement->asset;
-            //     $asset->location = $movement->destination_location;
-            //     $asset->save();
-            // });
     }
 
     public static function table(Table $table): Table
@@ -121,17 +110,23 @@ class MovementResource extends Resource
             ])
             ->defaultSort('created_at', 'desc')
             ->filters([
-                //
+                SelectFilter::make('asset')
+                    ->multiple()
+                    ->relationship('asset','name', fn (Builder $query) => $query->whereHas('movements'))
+                    ->searchable()
+                    ->preload(),
             ])
             ->actions([
-                Tables\Actions\ViewAction::make(),
-                Tables\Actions\EditAction::make(),
-                Tables\Actions\DeleteAction::make(),
+                //
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ExportBulkAction::make()
+                    ->label('Exportar')
+                    ->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename('Movimentações-'.date('Y-m-d-H-i'))
+                    ])
             ]);
     }
 
