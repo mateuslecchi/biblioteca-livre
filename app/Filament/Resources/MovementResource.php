@@ -111,6 +111,7 @@ class MovementResource extends Resource
             ->defaultSort('created_at', 'desc')
             ->filters([
                 SelectFilter::make('asset')
+                    ->label('Selecionar Bem(s)')
                     ->multiple()
                     ->relationship('asset','name', fn (Builder $query) => $query->whereHas('movements'))
                     ->searchable()
