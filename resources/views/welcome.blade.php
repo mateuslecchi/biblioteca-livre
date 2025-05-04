@@ -5,11 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Biblioteca Livre de Coqueiral</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono&display=swap" rel="stylesheet">
+
     <style>
         body, html {
             height: 100%;
             margin: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'IBM Plex Mono', monospace;
             overflow: hidden;
         }
 
@@ -101,7 +103,8 @@
             <div class="highlight">Biblioteca Livre de Coqueiral</div>
             <div class="info mt-3">
                 <p><strong>📍 Localização:</strong> Praça Central de Coqueiral, Aracruz - ES</p>
-                <p><strong>📞 Contato:</strong> (27) 99999-0000 | bibliotecacoqueiral@exemplo.com</p>
+                <p><strong>📞 Contato:</strong> (27) 99999-0000</p>
+                <p><strong>📧 E-Mail:</strong> bibliotecacoqueiral@exemplo.com</p>
                 <p><strong>⏰ Horário de Funcionamento:</strong> Segunda a Sexta, 8h às 18h</p>
             </div>
             <div class="poema">
