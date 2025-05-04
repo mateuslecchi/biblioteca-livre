@@ -60,17 +60,20 @@ class MovementsRelationManager extends RelationManager
                 Tables\Columns\TextColumn::make('origin_location')
                     ->label('Local de Origem')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(30),
                     
                 Tables\Columns\TextColumn::make('destination_location')
                     ->label('Local de Destino')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(30),
                     
                 Tables\Columns\TextColumn::make('responsible')
                     ->label('Responsável')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(30),
                     
                 Tables\Columns\TextColumn::make('created_at')
                     ->label('Data da Movimentação')
