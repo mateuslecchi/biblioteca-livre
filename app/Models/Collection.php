@@ -37,7 +37,7 @@ class Collection extends Model
     }
 
     /**
-     * Gera a próxima etiqueta legível sequencial no formato L-00001, L-0000A, etc.
+     * Gera a próxima etiqueta legível sequencial no formato L-XXXXX
      */
     public static function generateNextTag(): string
     {
