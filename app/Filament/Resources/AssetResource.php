@@ -14,6 +14,8 @@ use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
+use pxlrbt\FilamentExcel\Actions\Tables\ExportBulkAction;
+use pxlrbt\FilamentExcel\Exports\ExcelExport;
 
 class AssetResource extends Resource
 {
@@ -60,17 +62,6 @@ class AssetResource extends Resource
                             ->required()
                             ->maxDate(now()),
                             
-                        Forms\Components\TextInput::make('condition')
-                            ->label('Estado')
-                            ->required()
-                            ->maxLength(255),
-                            
-                        Forms\Components\ToggleButtons::make('status')
-                            ->label('Status')
-                            ->options(AssetStatus::class)
-                            ->required()
-                            ->inline(),
-                            
                         Forms\Components\TextInput::make('tag')
                             ->label('Etiqueta') 
                             ->helperText('Gerada automaticamente se não for informada')
@@ -78,6 +69,13 @@ class AssetResource extends Resource
                             ->unique(ignoreRecord: true)
                             ->placeholder('P-XXXXX')
                             ->dehydrated(fn ($state) => filled($state)),
+
+                            Forms\Components\ToggleButtons::make('status')
+                            ->label('Status')
+                            ->options(AssetStatus::class)
+                            ->required()
+                            ->inline()
+                            ->columnSpanFull(),
                     ])->columns(2),
                     
                 Forms\Components\Section::make('Detalhes')
@@ -96,21 +94,19 @@ class AssetResource extends Resource
                 Tables\Columns\TextColumn::make('name')
                     ->label('Nome')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50),
                     
                 Tables\Columns\TextColumn::make('location')
                     ->label('Local')
                     ->searchable()
-                    ->sortable(),
+                    ->sortable()
+                    ->limit(50),
                     
                 Tables\Columns\TextColumn::make('acquisition_date')
                     ->label('Data de Aquisição')
                     ->date('d/m/Y')
                     ->sortable(),
-                    
-                Tables\Columns\TextColumn::make('condition')
-                    ->label('Estado')
-                    ->searchable(),
                     
                 Tables\Columns\TextColumn::make('status')
                     ->label('Status')
@@ -143,9 +139,13 @@ class AssetResource extends Resource
                 Tables\Actions\DeleteAction::make(),
             ])
             ->bulkActions([
-                Tables\Actions\BulkActionGroup::make([
-                    Tables\Actions\DeleteBulkAction::make(),
-                ]),
+                ExportBulkAction::make()
+                    ->label('Exportar')
+                    ->exports([
+                        ExcelExport::make()
+                            ->fromTable()
+                            ->withFilename('Bens-'.date('Y-m-d-H-i'))
+                    ])
             ]);
     }
 

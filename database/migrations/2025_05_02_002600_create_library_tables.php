@@ -18,7 +18,6 @@ return new class extends Migration
             $table->text('description')->nullable(); // descricao
             $table->string('location');              // local
             $table->date('acquisition_date');        // data_aquisicao
-            $table->string('condition');             // estado
             $table->string('status');                // status
             $table->string('tag')->unique();         // etiqueta
             $table->timestamps();

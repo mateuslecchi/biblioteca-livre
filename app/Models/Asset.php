@@ -16,7 +16,6 @@ class Asset extends Model
         'description',    // descricao
         'location',       // local
         'acquisition_date', // data_aquisicao
-        'condition',      // estado
         'status',         // status
         'tag',            // etiqueta
     ];
